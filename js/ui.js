@@ -322,18 +322,19 @@ const UI = (function() {
     function renderCalendar(year, month, todos) {
         elements.currentMonth.textContent = `${year}年${month + 1}月`;
         
+        // 更新农历年份信息
+        const lunarInfo = LunarCalendar.solarToLunar(year, month + 1, 1);
+        const lunarYearEl = document.getElementById('lunarYear');
+        const lunarZodiacEl = document.getElementById('lunarZodiac');
+        if (lunarYearEl) lunarYearEl.textContent = lunarInfo.gzYear + '年';
+        if (lunarZodiacEl) lunarZodiacEl.textContent = lunarInfo.animal + '年';
+        
         const firstDay = new Date(year, month, 1);
         const lastDay = new Date(year, month + 1, 0);
         const daysInMonth = lastDay.getDate();
         const startDayOfWeek = firstDay.getDay();
         
         let html = '';
-        
-        // 星期标题
-        const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
-        weekdays.forEach(day => {
-            html += `<div class="calendar-weekday">${day}</div>`;
-        });
         
         // 上月填充
         const prevMonthDays = new Date(year, month, 0).getDate();
@@ -351,9 +352,71 @@ const UI = (function() {
             
             const dayTodos = todos.filter(t => t.dueDate >= dayStart && t.dueDate <= dayEnd);
             
+            // 获取农历信息
+            let lunarDisplay = '';
+            let termDisplay = '';
+            let holidayClass = '';
+            let holidayDisplay = '';
+            
+            try {
+                const lunar = LunarCalendar.solarToLunar(year, month + 1, day);
+                
+                // 显示农历日期（简化显示）
+                if (lunar.lDay === 1) {
+                    // 农历初一显示月份
+                    lunarDisplay = lunar.monthCn;
+                } else if ([1, 11, 21].includes(lunar.lDay)) {
+                    // 初一、十一、二十一显示中文
+                    lunarDisplay = lunar.dayCn;
+                } else {
+                    // 其他日期只显示数字
+                    lunarDisplay = lunar.dayCn.substring(1);
+                }
+                
+                // 显示节气
+                if (lunar.term) {
+                    termDisplay = lunar.term;
+                    holidayClass += ' has-term';
+                }
+                
+                // 获取节假日信息
+                const holidays = Holidays.getHolidayInfo(year, month + 1, day, lunar.lMonth, lunar.lDay);
+                
+                // 中国传统节日（优先级最高）
+                if (holidays.traditional) {
+                    holidayClass += ' traditional';
+                    holidayDisplay = holidays.traditional.name;
+                }
+                
+                // 中国法定假日
+                if (holidays.china && holidays.china.type === 'holiday') {
+                    holidayClass += ' china-holiday';
+                    if (!holidayDisplay) {
+                        holidayDisplay = holidays.china.name;
+                    }
+                }
+                
+                // 美国假日
+                if (holidays.us && holidays.us.type === 'holiday') {
+                    holidayClass += ' us-holiday';
+                    if (!holidayDisplay && !holidays.traditional) {
+                        holidayDisplay = holidays.us.name;
+                    }
+                }
+                
+            } catch (e) {
+                console.warn('Lunar calendar calculation failed:', e);
+            }
+            
             html += `
-                <div class="calendar-day ${isToday ? 'today' : ''}" data-date="${date.toISOString().split('T')[0]}">
-                    <span class="calendar-day-number">${day}</span>
+                <div class="calendar-day ${isToday ? 'today' : ''}${holidayClass}" data-date="${date.toISOString().split('T')[0]}">
+                    <div class="day-header">
+                        <span class="calendar-day-number">${day}</span>
+                        ${holidayDisplay ? `<span class="holiday-badge">${holidayDisplay}</span>` : ''}
+                    </div>
+                    <div class="day-info">
+                        ${termDisplay ? `<span class="lunar-term">${termDisplay}</span>` : `<span class="lunar-date">${lunarDisplay}</span>`}
+                    </div>
                     <div class="calendar-day-tasks">
                         ${dayTodos.map(t => `<div class="calendar-task-dot ${t.colorTheme}"></div>`).join('')}
                     </div>

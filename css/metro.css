@@ -574,6 +574,10 @@
     color: var(--mondrian-white);
 }
 
+.cal-title {
+    text-align: center;
+}
+
 .cal-nav {
     width: 40px;
     height: 40px;
@@ -584,6 +588,8 @@
     color: var(--mondrian-white);
     background-color: rgba(255, 255, 255, 0.1);
     transition: background-color var(--duration-fast);
+    border: none;
+    cursor: pointer;
 }
 
 .cal-nav:hover {
@@ -596,6 +602,74 @@
     font-weight: 300;
     text-transform: uppercase;
     letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.cal-lunar-info {
+    font-size: var(--font-size-sm);
+    color: var(--gray-400);
+    display: flex;
+    gap: var(--space-sm);
+    justify-content: center;
+}
+
+/* 日历星期标题 */
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background-color: var(--mondrian-black);
+    gap: var(--grid-border-width);
+    padding: 0 var(--grid-border-width);
+}
+
+.calendar-weekday {
+    background-color: var(--mondrian-black);
+    color: var(--mondrian-white);
+    padding: var(--space-sm);
+    text-align: center;
+    font-size: var(--font-size-sm);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* 日历图例 */
+.calendar-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background-color: var(--gray-100);
+    border-top: var(--grid-border-width) solid var(--mondrian-black);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: var(--font-size-xs);
+    color: var(--gray-600);
+}
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+}
+
+.legend-dot.china-holiday {
+    background-color: #FF5722;
+}
+
+.legend-dot.us-holiday {
+    background-color: #1976D2;
+}
+
+.legend-dot.traditional {
+    background-color: #C2185B;
+}
+
+.legend-dot.term {
+    background-color: #2E7D32;
 }
 
 /* 空状态 */

@@ -195,15 +195,50 @@
     
     .calendar-grid {
         grid-template-columns: repeat(7, 1fr);
+        gap: 1px;
     }
     
     .calendar-day {
         min-height: 60px;
-        padding: 4px;
+        padding: 2px;
     }
     
     .calendar-day-number {
-        font-size: var(--font-size-sm);
+        font-size: var(--font-size-xs);
+    }
+    
+    .lunar-date,
+    .lunar-term {
+        font-size: 10px;
+    }
+    
+    .holiday-badge {
+        font-size: 9px;
+        padding: 1px 2px;
+        max-width: 90%;
+    }
+    
+    .calendar-weekdays {
+        gap: 1px;
+    }
+    
+    .calendar-weekday {
+        padding: 4px;
+        font-size: 10px;
+    }
+    
+    .calendar-legend {
+        padding: var(--space-sm);
+        gap: var(--space-sm);
+    }
+    
+    .legend-item {
+        font-size: 10px;
+    }
+    
+    .legend-dot {
+        width: 8px;
+        height: 8px;
     }
     
     .fab-add {

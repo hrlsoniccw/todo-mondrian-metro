@@ -100,11 +100,44 @@
         <div class="calendar-view" id="calendarView" style="display: none;">
             <div class="calendar-header">
                 <button class="cal-nav" id="prevMonth">‹</button>
-                <h3 class="cal-month" id="currentMonth">2026年1月</h3>
+                <div class="cal-title">
+                    <h3 class="cal-month" id="currentMonth">2026年1月</h3>
+                    <div class="cal-lunar-info">
+                        <span id="lunarYear"></span>
+                        <span id="lunarZodiac"></span>
+                    </div>
+                </div>
                 <button class="cal-nav" id="nextMonth">›</button>
+            </div>
+            <div class="calendar-weekdays">
+                <div class="calendar-weekday">日</div>
+                <div class="calendar-weekday">一</div>
+                <div class="calendar-weekday">二</div>
+                <div class="calendar-weekday">三</div>
+                <div class="calendar-weekday">四</div>
+                <div class="calendar-weekday">五</div>
+                <div class="calendar-weekday">六</div>
             </div>
             <div class="calendar-grid" id="calendarGrid">
                 <!-- 日历格子将通过 JS 生成 -->
+            </div>
+            <div class="calendar-legend">
+                <div class="legend-item">
+                    <span class="legend-dot china-holiday"></span>
+                    <span>中国假日</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot us-holiday"></span>
+                    <span>美国假日</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot traditional"></span>
+                    <span>传统节日</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot term"></span>
+                    <span>节气</span>
+                </div>
             </div>
         </div>
 
@@ -311,6 +344,8 @@
     <!-- 引入 JavaScript -->
     <script src="js/storage.js"></script>
     <script src="js/todo.js"></script>
+    <script src="js/lunar.js"></script>
+    <script src="js/holidays.js"></script>
     <script src="js/gestures.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/app.js"></script>

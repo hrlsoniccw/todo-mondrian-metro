@@ -316,6 +316,72 @@
 .calendar-task-dot.yellow { background-color: var(--mondrian-yellow); }
 .calendar-task-dot.white { background-color: var(--gray-400); }
 
+/* 农历和假日样式 */
+.day-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 2px;
+}
+
+.day-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.lunar-date {
+    font-size: var(--font-size-xs);
+    color: var(--gray-500);
+}
+
+.lunar-term {
+    font-size: var(--font-size-xs);
+    color: var(--mondrian-green, #2E7D32);
+    font-weight: 500;
+}
+
+.holiday-badge {
+    font-size: var(--font-size-xs);
+    padding: 1px 4px;
+    border-radius: 3px;
+    background-color: var(--mondrian-red);
+    color: var(--mondrian-white);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 80%;
+}
+
+/* 假日类型样式 */
+.calendar-day.china-holiday {
+    background-color: #FFF3E0;
+}
+
+.calendar-day.china-holiday .holiday-badge {
+    background-color: #FF5722;
+}
+
+.calendar-day.us-holiday {
+    background-color: #E3F2FD;
+}
+
+.calendar-day.us-holiday .holiday-badge {
+    background-color: #1976D2;
+}
+
+.calendar-day.traditional {
+    background-color: #FCE4EC;
+}
+
+.calendar-day.traditional .holiday-badge {
+    background-color: #C2185B;
+}
+
+.calendar-day.has-term {
+    background-color: #E8F5E9;
+}
+
 /* 星期标题 */
 .calendar-weekday {
     background-color: var(--mondrian-black);
