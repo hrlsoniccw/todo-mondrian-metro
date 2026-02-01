@@ -1,0 +1,328 @@
+/* ============================================
+   Mondrian Grid System - 蒙德里安网格系统
+   ============================================ */
+
+/* 蒙德里安网格布局 */
+.tile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--tile-size), 1fr));
+    grid-auto-rows: var(--tile-size);
+    gap: var(--grid-gap);
+    padding: var(--space-md);
+    background-color: var(--mondrian-black);
+    min-height: calc(100vh - 200px);
+    align-content: start;
+}
+
+/* 蒙德里安黑色边框效果 */
+.tile-grid::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    border: var(--grid-border-width) solid var(--mondrian-black);
+    z-index: var(--z-base);
+}
+
+/* 磁贴基础样式 */
+.tile {
+    position: relative;
+    background-color: var(--mondrian-white);
+    border: var(--grid-border-width) solid var(--mondrian-black);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform var(--duration-normal) var(--ease-standard),
+                box-shadow var(--duration-normal) var(--ease-standard);
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-sm);
+}
+
+/* 磁贴悬停效果 */
+.tile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+}
+
+/* 磁贴激活状态 */
+.tile:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 磁贴尺寸类 */
+.tile-small {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+.tile-medium {
+    grid-column: span 2;
+    grid-row: span 1;
+}
+
+.tile-wide {
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+.tile-large {
+    grid-column: span 3;
+    grid-row: span 2;
+}
+
+/* 蒙德里安颜色主题 */
+.tile-red {
+    background-color: var(--mondrian-red);
+    color: var(--mondrian-white);
+}
+
+.tile-blue {
+    background-color: var(--mondrian-blue);
+    color: var(--mondrian-white);
+}
+
+.tile-yellow {
+    background-color: var(--mondrian-yellow);
+    color: var(--mondrian-black);
+}
+
+.tile-white {
+    background-color: var(--mondrian-white);
+    color: var(--mondrian-black);
+}
+
+.tile-black {
+    background-color: var(--mondrian-black);
+    color: var(--mondrian-white);
+}
+
+/* 已完成任务磁贴 */
+.tile-completed {
+    opacity: 0.7;
+    background-color: var(--gray-200);
+}
+
+.tile-completed .tile-title {
+    text-decoration: line-through;
+    color: var(--gray-500);
+}
+
+/* 磁贴内容布局 */
+.tile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--space-xs);
+}
+
+.tile-category {
+    font-size: var(--font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+.tile-priority {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: currentColor;
+}
+
+.tile-title {
+    font-family: var(--font-light);
+    font-size: var(--font-size-lg);
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: var(--space-xs);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.tile-desc {
+    font-size: var(--font-size-sm);
+    opacity: 0.8;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    flex: 1;
+}
+
+.tile-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: var(--space-xs);
+    font-size: var(--font-size-xs);
+    opacity: 0.7;
+}
+
+.tile-date {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.tile-tags {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+}
+
+.tile-tag {
+    padding: 2px 6px;
+    background-color: rgba(0, 0, 0, 0.1);
+    font-size: 10px;
+    text-transform: uppercase;
+}
+
+/* 四象限网格 */
+.matrix-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: var(--grid-border-width);
+    background-color: var(--mondrian-black);
+    height: calc(100vh - 180px);
+    padding: var(--grid-border-width);
+}
+
+.matrix-quadrant {
+    background-color: var(--mondrian-white);
+    padding: var(--space-md);
+    overflow-y: auto;
+    position: relative;
+}
+
+/* 四象限颜色标识 */
+.matrix-quadrant.q1 {
+    background-color: rgba(230, 57, 70, 0.1);
+    border-top: 4px solid var(--mondrian-red);
+    border-left: 4px solid var(--mondrian-red);
+}
+
+.matrix-quadrant.q2 {
+    background-color: rgba(244, 211, 94, 0.1);
+    border-top: 4px solid var(--mondrian-yellow);
+    border-right: 4px solid var(--mondrian-yellow);
+}
+
+.matrix-quadrant.q3 {
+    background-color: rgba(69, 123, 157, 0.1);
+    border-bottom: 4px solid var(--mondrian-blue);
+    border-left: 4px solid var(--mondrian-blue);
+}
+
+.matrix-quadrant.q4 {
+    background-color: var(--gray-100);
+    border-bottom: 4px solid var(--gray-400);
+    border-right: 4px solid var(--gray-400);
+}
+
+.quadrant-title {
+    font-family: var(--font-light);
+    font-size: var(--font-size-base);
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-sm);
+    border-bottom: 2px solid currentColor;
+}
+
+.quadrant-tiles {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+/* 四象限中的迷你磁贴 */
+.quadrant-tiles .tile {
+    min-height: auto;
+    padding: var(--space-sm);
+    border-width: 2px;
+}
+
+.quadrant-tiles .tile-title {
+    font-size: var(--font-size-base);
+    -webkit-line-clamp: 1;
+}
+
+/* 日历网格 */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-auto-rows: minmax(100px, auto);
+    gap: var(--grid-border-width);
+    background-color: var(--mondrian-black);
+    padding: var(--grid-border-width);
+}
+
+.calendar-day {
+    background-color: var(--mondrian-white);
+    padding: var(--space-sm);
+    min-height: 100px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color var(--duration-fast);
+}
+
+.calendar-day:hover {
+    background-color: var(--gray-100);
+}
+
+.calendar-day.other-month {
+    background-color: var(--gray-200);
+    color: var(--gray-500);
+}
+
+.calendar-day.today {
+    background-color: var(--mondrian-yellow);
+}
+
+.calendar-day-number {
+    font-family: var(--font-light);
+    font-size: var(--font-size-lg);
+    font-weight: 300;
+    margin-bottom: var(--space-xs);
+}
+
+.calendar-day-tasks {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.calendar-task-dot {
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+}
+
+.calendar-task-dot.red { background-color: var(--mondrian-red); }
+.calendar-task-dot.blue { background-color: var(--mondrian-blue); }
+.calendar-task-dot.yellow { background-color: var(--mondrian-yellow); }
+.calendar-task-dot.white { background-color: var(--gray-400); }
+
+/* 星期标题 */
+.calendar-weekday {
+    background-color: var(--mondrian-black);
+    color: var(--mondrian-white);
+    padding: var(--space-sm);
+    text-align: center;
+    font-size: var(--font-size-sm);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}

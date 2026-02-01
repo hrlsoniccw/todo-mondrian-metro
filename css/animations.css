@@ -1,0 +1,650 @@
+/* ============================================
+   Animations - 动画效果库
+   增强的视觉反馈和过渡动画
+   ============================================ */
+
+/* 磁贴入场动画 */
+@keyframes tileEnter {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.tile {
+    animation: tileEnter 0.4s var(--ease-bounce) backwards;
+}
+
+/* 错开动画延迟 */
+.tile:nth-child(1) { animation-delay: 0.05s; }
+.tile:nth-child(2) { animation-delay: 0.1s; }
+.tile:nth-child(3) { animation-delay: 0.15s; }
+.tile:nth-child(4) { animation-delay: 0.2s; }
+.tile:nth-child(5) { animation-delay: 0.25s; }
+.tile:nth-child(6) { animation-delay: 0.3s; }
+.tile:nth-child(7) { animation-delay: 0.35s; }
+.tile:nth-child(8) { animation-delay: 0.4s; }
+
+/* 磁贴脉冲动画（新任务） */
+@keyframes tilePulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(230, 57, 70, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(230, 57, 70, 0);
+    }
+}
+
+.tile-new {
+    animation: tilePulse 1s ease-out;
+}
+
+/* 磁贴摇晃动画（多选模式） */
+@keyframes tileShake {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-1deg); }
+    75% { transform: rotate(1deg); }
+}
+
+.tile-selected {
+    animation: tileShake 0.3s ease-in-out infinite;
+    box-shadow: 0 0 0 3px var(--mondrian-yellow);
+}
+
+/* 磁贴长按反馈 */
+@keyframes tilePress {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+
+.tile.long-pressing {
+    animation: tilePress 0.3s ease-in-out;
+}
+
+/* 磁贴翻转动画 */
+.tile-flip-container {
+    perspective: 1000px;
+}
+
+.tile-flip {
+    transform-style: preserve-3d;
+    transition: transform 0.6s var(--ease-standard);
+}
+
+.tile-flip.flipped {
+    transform: rotateY(180deg);
+}
+
+.tile-front,
+.tile-back {
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.tile-back {
+    transform: rotateY(180deg);
+}
+
+/* 磁贴滑动删除动画 */
+@keyframes slideOutRight {
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+@keyframes slideOutLeft {
+    to {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
+
+.tile.deleting {
+    animation: slideOutRight 0.3s var(--ease-exit) forwards;
+}
+
+.tile.completing {
+    animation: slideOutLeft 0.3s var(--ease-exit) forwards;
+}
+
+/* 磁贴高度收缩动画 */
+@keyframes collapseHeight {
+    to {
+        height: 0;
+        margin: 0;
+        padding: 0;
+        border: none;
+    }
+}
+
+.tile.collapsing {
+    animation: collapseHeight 0.3s var(--ease-standard) forwards;
+}
+
+/* FAB 按钮动画 */
+@keyframes fabPulse {
+    0% {
+        box-shadow: 0 4px 12px rgba(230, 57, 70, 0.4);
+    }
+    50% {
+        box-shadow: 0 4px 20px rgba(230, 57, 70, 0.6);
+    }
+    100% {
+        box-shadow: 0 4px 12px rgba(230, 57, 70, 0.4);
+    }
+}
+
+.fab-add {
+    animation: fabPulse 2s ease-in-out infinite;
+}
+
+.fab-add:hover {
+    animation: none;
+}
+
+/* 筛选磁贴激活动画 */
+@keyframes filterActivate {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.filter-tile.active {
+    animation: filterActivate 0.2s ease-out;
+}
+
+/* 模态框进入动画 */
+@keyframes modalEnter {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal.active .modal-content {
+    animation: modalEnter 0.4s var(--ease-bounce);
+}
+
+/* 模态框退出动画 */
+@keyframes modalExit {
+    from {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.9) translateY(30px);
+    }
+}
+
+.modal.exiting .modal-content {
+    animation: modalExit 0.3s var(--ease-exit) forwards;
+}
+
+/* 详情面板滑入动画 */
+@keyframes panelSlideIn {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.detail-panel.active {
+    animation: panelSlideIn 0.4s var(--ease-enter);
+}
+
+/* 详情面板滑出动画 */
+@keyframes panelSlideOut {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(100%);
+    }
+}
+
+.detail-panel.exiting {
+    animation: panelSlideOut 0.3s var(--ease-exit) forwards;
+}
+
+/* 搜索栏展开动画 */
+@keyframes searchExpand {
+    from {
+        width: 0;
+        opacity: 0;
+    }
+    to {
+        width: 100%;
+        opacity: 1;
+    }
+}
+
+.search-bar:focus-within {
+    animation: searchExpand 0.3s ease-out;
+}
+
+/* 日历格子进入动画 */
+@keyframes calendarDayEnter {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.calendar-day {
+    animation: calendarDayEnter 0.3s ease-out backwards;
+}
+
+.calendar-day:nth-child(7n+1) { animation-delay: 0.05s; }
+.calendar-day:nth-child(7n+2) { animation-delay: 0.1s; }
+.calendar-day:nth-child(7n+3) { animation-delay: 0.15s; }
+.calendar-day:nth-child(7n+4) { animation-delay: 0.2s; }
+.calendar-day:nth-child(7n+5) { animation-delay: 0.25s; }
+.calendar-day:nth-child(7n+6) { animation-delay: 0.3s; }
+.calendar-day:nth-child(7n+7) { animation-delay: 0.35s; }
+
+/* 任务点闪烁动画 */
+@keyframes taskDotBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.calendar-task-dot {
+    animation: taskDotBlink 2s ease-in-out infinite;
+}
+
+.calendar-task-dot:nth-child(2) { animation-delay: 0.2s; }
+.calendar-task-dot:nth-child(3) { animation-delay: 0.4s; }
+
+/* 吐司消息动画 */
+@keyframes toastSlideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes toastSlideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+.toast {
+    position: fixed;
+    bottom: 100px;
+    right: 20px;
+    padding: 16px 24px;
+    background: var(--mondrian-black);
+    color: var(--mondrian-white);
+    font-size: var(--font-size-sm);
+    z-index: var(--z-toast);
+    border-left: 4px solid var(--mondrian-blue);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transform: translateX(120%);
+    opacity: 0;
+    transition: all 0.3s var(--ease-enter);
+}
+
+.toast.active {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.toast-success {
+    border-left-color: var(--color-success);
+}
+
+.toast-error {
+    border-left-color: var(--color-danger);
+}
+
+.toast-warning {
+    border-left-color: var(--color-warning);
+}
+
+/* 多选工具栏动画 */
+@keyframes toolbarSlideUp {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+.multi-select-toolbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--mondrian-black);
+    color: var(--mondrian-white);
+    padding: var(--space-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: var(--z-sticky);
+    transform: translateY(100%);
+    transition: transform 0.3s var(--ease-enter);
+}
+
+.multi-select-toolbar.active {
+    transform: translateY(0);
+}
+
+/* 计数器更新动画 */
+@keyframes countUpdate {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.3);
+        color: var(--mondrian-yellow);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.filter-count.updating {
+    animation: countUpdate 0.3s ease-out;
+}
+
+/* 加载动画 */
+@keyframes loaderRotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes loaderPulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.loading {
+    position: relative;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    border: 3px solid var(--gray-300);
+    border-top-color: var(--mondrian-blue);
+    border-radius: 50%;
+    animation: loaderRotate 1s linear infinite;
+}
+
+/* 视图切换过渡 */
+.main-content,
+.matrix-view,
+.calendar-view {
+    transition: opacity 0.3s var(--ease-standard);
+}
+
+/* 表单输入聚焦动画 */
+.form-input:focus,
+.form-textarea:focus {
+    animation: inputGlow 0.3s ease-out;
+}
+
+@keyframes inputGlow {
+    0% {
+        box-shadow: 0 0 0 0 rgba(69, 123, 157, 0.4);
+    }
+    100% {
+        box-shadow: 0 0 0 4px rgba(69, 123, 157, 0.1);
+    }
+}
+
+/* 按钮涟漪效果 */
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:active::after {
+    width: 300px;
+    height: 300px;
+}
+
+/* 空状态图标动画 */
+@keyframes emptyFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.empty-state svg {
+    animation: emptyFloat 3s ease-in-out infinite;
+}
+
+/* 标签悬停效果 */
+.tile-tag {
+    transition: all 0.2s ease;
+}
+
+.tile-tag:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 分类选择器动画 */
+.cat-btn,
+.pri-btn {
+    transition: all 0.2s var(--ease-bounce);
+}
+
+.cat-btn:active,
+.pri-btn:active {
+    transform: scale(0.95);
+}
+
+/* 滚动指示器 */
+@keyframes scrollHint {
+    0%, 100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+.filter-bar::after {
+    content: '›';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray-400);
+    animation: scrollHint 1.5s ease-in-out infinite;
+    pointer-events: none;
+}
+
+/* 磁贴悬停光泽效果 */
+.tile::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transition: left 0.5s ease;
+    pointer-events: none;
+}
+
+.tile:hover::before {
+    left: 100%;
+}
+
+/* 优先级指示器脉冲 */
+@keyframes priorityPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+    }
+}
+
+.tile-priority {
+    animation: priorityPulse 2s ease-in-out infinite;
+}
+
+/* 完成状态勾选动画 */
+@keyframes checkBounce {
+    0% {
+        transform: scale(0) rotate(-45deg);
+    }
+    50% {
+        transform: scale(1.2) rotate(0deg);
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+.tile-completed .tile-title::before {
+    content: '✓ ';
+    color: var(--color-success);
+    animation: checkBounce 0.4s var(--ease-bounce);
+}
+
+/* 日期截止警告 */
+@keyframes deadlineWarning {
+    0%, 100% {
+        color: var(--mondrian-red);
+    }
+    50% {
+        color: var(--mondrian-black);
+    }
+}
+
+.tile-date.overdue {
+    animation: deadlineWarning 1s ease-in-out infinite;
+    font-weight: bold;
+}
+
+/* 网格线绘制动画 */
+@keyframes gridLineDraw {
+    from {
+        stroke-dashoffset: 1000;
+    }
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* 页面加载动画 */
+@keyframes pageLoad {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.app-header,
+.filter-bar,
+.search-bar,
+.main-content {
+    animation: pageLoad 0.5s ease-out backwards;
+}
+
+.app-header { animation-delay: 0.1s; }
+.filter-bar { animation-delay: 0.2s; }
+.search-bar { animation-delay: 0.3s; }
+.main-content { animation-delay: 0.4s; }
+
+/* 响应式动画调整 */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .tile::before {
+        display: none;
+    }
+}

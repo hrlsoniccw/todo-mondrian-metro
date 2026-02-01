@@ -1,0 +1,340 @@
+/* ============================================
+   Responsive Styles - 响应式适配
+   ============================================ */
+
+/* 平板设备 (768px+) */
+@media (min-width: 768px) {
+    :root {
+        --tile-size: 140px;
+        --grid-gap: 8px;
+    }
+    
+    .tile-grid {
+        padding: var(--space-lg);
+    }
+    
+    .app-header {
+        padding: var(--space-md) var(--space-xl);
+    }
+    
+    .modal-content {
+        max-width: 600px;
+    }
+    
+    .detail-panel {
+        width: 50%;
+    }
+    
+    .calendar-grid {
+        grid-auto-rows: minmax(120px, auto);
+    }
+    
+    .calendar-day {
+        min-height: 120px;
+    }
+}
+
+/* 桌面设备 (1024px+) */
+@media (min-width: 1024px) {
+    :root {
+        --tile-size: 160px;
+        --grid-gap: 10px;
+    }
+    
+    .tile-grid {
+        grid-template-columns: repeat(auto-fill, minmax(var(--tile-size), 1fr));
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+    
+    .matrix-grid {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+    
+    .modal-content {
+        max-width: 700px;
+    }
+    
+    .detail-panel {
+        width: 40%;
+        max-width: 520px;
+    }
+    
+    .fab-add {
+        bottom: var(--space-xl);
+        right: var(--space-xl);
+    }
+}
+
+/* 大屏桌面 (1440px+) */
+@media (min-width: 1440px) {
+    :root {
+        --tile-size: 180px;
+        --grid-gap: 12px;
+    }
+    
+    .tile-grid,
+    .matrix-grid {
+        max-width: 1600px;
+    }
+}
+
+/* 移动端横屏 */
+@media (max-height: 500px) and (orientation: landscape) {
+    .app-header {
+        padding: var(--space-sm) var(--space-md);
+    }
+    
+    .app-title {
+        font-size: var(--font-size-xl);
+    }
+    
+    .filter-tile {
+        min-width: 60px;
+        height: 50px;
+    }
+    
+    .fab-add {
+        width: 48px;
+        height: 48px;
+    }
+    
+    .fab-add svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+/* 小屏手机优化 (480px以下) */
+@media (max-width: 480px) {
+    :root {
+        --tile-size: 100px;
+        --grid-gap: 4px;
+    }
+    
+    .app-header {
+        padding: var(--space-sm);
+        flex-wrap: wrap;
+        gap: var(--space-sm);
+    }
+    
+    .app-title {
+        font-size: var(--font-size-xl);
+        letter-spacing: 1px;
+    }
+    
+    .view-switcher {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .view-btn {
+        padding: 6px 10px;
+        font-size: var(--font-size-xs);
+    }
+    
+    .menu-btn {
+        order: 2;
+    }
+    
+    .filter-tile {
+        min-width: 70px;
+        height: 55px;
+    }
+    
+    .filter-count {
+        font-size: var(--font-size-lg);
+    }
+    
+    .search-bar {
+        padding: var(--space-xs) var(--space-sm);
+    }
+    
+    .tile-grid {
+        padding: var(--space-sm);
+    }
+    
+    .tile {
+        padding: var(--space-xs);
+    }
+    
+    .tile-title {
+        font-size: var(--font-size-base);
+        -webkit-line-clamp: 1;
+    }
+    
+    .tile-desc {
+        font-size: var(--font-size-xs);
+        -webkit-line-clamp: 1;
+    }
+    
+    .modal-content {
+        max-width: 95vw;
+        max-height: 95vh;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .detail-panel {
+        max-width: 100%;
+    }
+    
+    .matrix-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4, auto);
+        height: auto;
+    }
+    
+    .matrix-quadrant {
+        min-height: 200px;
+    }
+    
+    .calendar-grid {
+        grid-template-columns: repeat(7, 1fr);
+    }
+    
+    .calendar-day {
+        min-height: 60px;
+        padding: 4px;
+    }
+    
+    .calendar-day-number {
+        font-size: var(--font-size-sm);
+    }
+    
+    .fab-add {
+        width: 56px;
+        height: 56px;
+        bottom: var(--space-md);
+        right: var(--space-md);
+    }
+    
+    .fab-add svg {
+        width: 28px;
+        height: 28px;
+    }
+}
+
+/* 超小屏 (320px以下) */
+@media (max-width: 320px) {
+    :root {
+        --tile-size: 80px;
+    }
+    
+    .tile-title {
+        font-size: var(--font-size-sm);
+    }
+    
+    .filter-tile {
+        min-width: 60px;
+    }
+}
+
+/* 触摸设备优化 */
+@media (pointer: coarse) {
+    .tile:hover {
+        transform: none;
+    }
+    
+    .tile:active {
+        transform: scale(0.98);
+    }
+    
+    .btn:hover,
+    .filter-tile:hover,
+    .view-btn:hover {
+        transform: none;
+    }
+    
+    /* 增大触摸目标 */
+    .menu-btn,
+    .modal-close,
+    .detail-close {
+        min-width: 44px;
+        min-height: 44px;
+    }
+    
+    .filter-tile {
+        min-height: 60px;
+    }
+    
+    .cat-btn,
+    .pri-btn {
+        min-height: 40px;
+    }
+}
+
+/* 减少动画偏好 */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .tile:hover {
+        transform: none;
+    }
+    
+    .fab-add:hover {
+        transform: none;
+    }
+    
+    .modal-content {
+        transition: none;
+    }
+    
+    .detail-panel {
+        transition: none;
+    }
+}
+
+/* 暗色模式支持 (预留) */
+@media (prefers-color-scheme: dark) {
+    /* 蒙德里安风格保持原色，不做暗色适配 */
+    /* 如需暗色模式，可取消注释以下代码 */
+    
+    /*
+    :root {
+        --mondrian-white: #1a1a1a;
+        --mondrian-black: #ffffff;
+        --gray-100: #2d2d2d;
+        --gray-200: #3d3d3d;
+        --gray-300: #4d4d4d;
+        --gray-400: #6d6d6d;
+        --gray-500: #8d8d8d;
+        --gray-600: #adadad;
+        --gray-700: #cdcdcd;
+        --gray-800: #e0e0e0;
+        --gray-900: #f0f0f0;
+    }
+    */
+}
+
+/* 打印样式 */
+@media print {
+    .app-header,
+    .filter-bar,
+    .search-bar,
+    .fab-add,
+    .modal,
+    .detail-panel {
+        display: none !important;
+    }
+    
+    .tile-grid {
+        background-color: white;
+        border: 1px solid black;
+    }
+    
+    .tile {
+        border: 1px solid black;
+        break-inside: avoid;
+    }
+}

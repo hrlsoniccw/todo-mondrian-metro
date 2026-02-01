@@ -1,0 +1,66 @@
+/* 拖拽样式 */
+
+/* 可拖拽磁贴 */
+.draggable-tile {
+    cursor: grab;
+}
+
+.draggable-tile:active {
+    cursor: grabbing;
+}
+
+/* 拖拽中状态 */
+.tile.dragging {
+    opacity: 0.4;
+    transform: scale(1.02);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+/* 拖拽目标高亮 */
+.tile.drag-over {
+    border: 3px dashed var(--mondrian-yellow) !important;
+    background: rgba(244, 211, 94, 0.1) !important;
+    transform: scale(1.02);
+}
+
+/* 看板拖拽区域 */
+.quadrant-tiles {
+    min-height: 100px;
+    transition: all 0.3s ease;
+}
+
+.matrix-quadrant.drop-target {
+    background: rgba(244, 211, 94, 0.2) !important;
+    box-shadow: inset 0 0 20px rgba(244, 211, 94, 0.3);
+}
+
+.matrix-quadrant.drop-target .quadrant-title {
+    color: var(--mondrian-yellow);
+    font-weight: 600;
+}
+
+/* 触摸拖拽镜像 */
+.tile-drag-mirror {
+    position: fixed;
+    pointer-events: none;
+    z-index: 10000;
+    opacity: 0.9;
+    transform: scale(1.05);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* 拖拽占位符 */
+.tile-placeholder {
+    background: rgba(244, 211, 94, 0.2);
+    border: 2px dashed var(--mondrian-yellow);
+}
+
+/* 网格拖拽时的样式 */
+.tile-grid.dragging-active {
+    user-select: none;
+}
+
+.tile-grid.dragging-active .tile:not(.dragging) {
+    transition: transform 0.2s ease;
+}

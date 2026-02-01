@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mondrian Metro Todo</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/mondrian.css">
+    <link rel="stylesheet" href="css/metro.css">
+    <link rel="stylesheet" href="css/dragdrop.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 顶部导航栏 -->
+        <header class="app-header">
+            <h1 class="app-title">TODO</h1>
+            <div class="view-switcher">
+                <button class="view-btn active" data-view="tiles">磁贴</button>
+                <button class="view-btn" data-view="matrix">四象限</button>
+                <button class="view-btn" data-view="calendar">日历</button>
+            </div>
+            <button class="menu-btn" id="menuBtn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+        </header>
+
+        <!-- 筛选栏 -->
+        <nav class="filter-bar">
+            <div class="filter-scroll">
+                <button class="filter-tile active" data-filter="all">
+                    <span class="filter-count" id="countAll">0</span>
+                    <span class="filter-label">全部</span>
+                </button>
+                <button class="filter-tile" data-filter="work" data-color="blue">
+                    <span class="filter-count" id="countWork">0</span>
+                    <span class="filter-label">工作</span>
+                </button>
+                <button class="filter-tile" data-filter="personal" data-color="yellow">
+                    <span class="filter-count" id="countPersonal">0</span>
+                    <span class="filter-label">个人</span>
+                </button>
+                <button class="filter-tile" data-filter="urgent" data-color="red">
+                    <span class="filter-count" id="countUrgent">0</span>
+                    <span class="filter-label">紧急</span>
+                </button>
+                <button class="filter-tile" data-filter="completed">
+                    <span class="filter-count" id="countCompleted">0</span>
+                    <span class="filter-label">已完成</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- 搜索栏 -->
+        <div class="search-bar">
+            <input type="text" class="search-input" placeholder="搜索任务..." id="searchInput">
+            <button class="search-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- 主内容区 - 磁贴墙 -->
+        <main class="main-content" id="mainContent">
+            <div class="tile-grid" id="tileGrid">
+                <!-- 磁贴将通过 JS 动态生成 -->
+            </div>
+        </main>
+
+        <!-- 四象限视图（默认隐藏） -->
+        <div class="matrix-view" id="matrixView" style="display: none;">
+            <div class="matrix-grid">
+                <div class="matrix-quadrant q1" data-quadrant="1">
+                    <h3 class="quadrant-title">重要且紧急</h3>
+                    <div class="quadrant-tiles" id="q1Tiles"></div>
+                </div>
+                <div class="matrix-quadrant q2" data-quadrant="2">
+                    <h3 class="quadrant-title">重要不紧急</h3>
+                    <div class="quadrant-tiles" id="q2Tiles"></div>
+                </div>
+                <div class="matrix-quadrant q3" data-quadrant="3">
+                    <h3 class="quadrant-title">不重要紧急</h3>
+                    <div class="quadrant-tiles" id="q3Tiles"></div>
+                </div>
+                <div class="matrix-quadrant q4" data-quadrant="4">
+                    <h3 class="quadrant-title">不重要不紧急</h3>
+                    <div class="quadrant-tiles" id="q4Tiles"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 日历视图（默认隐藏） -->
+        <div class="calendar-view" id="calendarView" style="display: none;">
+            <div class="calendar-header">
+                <button class="cal-nav" id="prevMonth">‹</button>
+                <h3 class="cal-month" id="currentMonth">2026年1月</h3>
+                <button class="cal-nav" id="nextMonth">›</button>
+            </div>
+            <div class="calendar-grid" id="calendarGrid">
+                <!-- 日历格子将通过 JS 生成 -->
+            </div>
+        </div>
+
+        <!-- 添加任务按钮（浮动） -->
+        <button class="fab-add" id="fabAdd">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+        </button>
+
+        <!-- 添加/编辑任务模态框 -->
+        <div class="modal" id="todoModal">
+            <div class="modal-overlay"></div>
+            <div class="modal-content tile-wide">
+                <div class="modal-header">
+                    <h2 class="modal-title">新任务</h2>
+                    <button class="modal-close" id="modalClose">×</button>
+                </div>
+                <form class="todo-form" id="todoForm">
+                    <input type="hidden" id="todoId">
+                    
+                    <div class="form-group">
+                        <input type="text" class="form-input" id="todoTitle" placeholder="任务标题" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <textarea class="form-textarea" id="todoDesc" placeholder="详细描述（可选）" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">分类</label>
+                            <div class="category-selector">
+                                <button type="button" class="cat-btn active" data-cat="work" data-color="blue">工作</button>
+                                <button type="button" class="cat-btn" data-cat="personal" data-color="yellow">个人</button>
+                                <button type="button" class="cat-btn" data-cat="urgent" data-color="red">紧急</button>
+                                <button type="button" class="cat-btn" data-cat="later" data-color="white">稍后</button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">优先级</label>
+                            <div class="priority-selector">
+                                <button type="button" class="pri-btn active" data-priority="1">紧急重要</button>
+                                <button type="button" class="pri-btn" data-priority="2">重要</button>
+                                <button type="button" class="pri-btn" data-priority="3">紧急</button>
+                                <button type="button" class="pri-btn" data-priority="4">普通</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">截止日期</label>
+                        <input type="datetime-local" class="form-input" id="todoDue">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">标签（用逗号分隔）</label>
+                        <input type="text" class="form-input" id="todoTags" placeholder="例如：会议, 报告, 重要">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="btnCancel">取消</button>
+                        <button type="submit" class="btn btn-primary">保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 任务详情侧边栏 -->
+        <div class="detail-panel" id="detailPanel">
+            <div class="detail-content">
+                <button class="detail-close" id="detailClose">×</button>
+                <div class="detail-header">
+                    <span class="detail-category" id="detailCategory">工作</span>
+                    <span class="detail-date" id="detailDate">2026-01-31</span>
+                </div>
+                <h2 class="detail-title" id="detailTitle">任务标题</h2>
+                <p class="detail-desc" id="detailDesc">任务描述...</p>
+                <div class="detail-meta">
+                    <div class="detail-priority" id="detailPriority">优先级：重要且紧急</div>
+                    <div class="detail-tags" id="detailTags"></div>
+                </div>
+                <div class="detail-actions">
+                    <button class="btn-action complete" id="btnDetailComplete">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        完成
+                    </button>
+                    <button class="btn-action edit" id="btnDetailEdit">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                        编辑
+                    </button>
+                    <button class="btn-action delete" id="btnDetailDelete">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                        删除
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新用户向导 -->
+    <div id="onboardingWizard" class="onboarding-wizard">
+        <div class="wizard-overlay"></div>
+        <div class="wizard-container">
+            <div class="wizard-content">
+                <!-- 步骤 1: 欢迎 -->
+                <div class="wizard-step active" data-step="1">
+                    <div class="wizard-icon">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="12" y1="8" x2="12" y2="16"></line>
+                            <line x1="8" y1="12" x2="16" y2="12"></line>
+                        </svg>
+                    </div>
+                    <h2 class="wizard-title">欢迎使用 Mondrian Metro Todo</h2>
+                    <p class="wizard-desc">一款融合蒙德里安艺术风格与 Metro 风格的现代化 Todo 应用</p>
+                </div>
+                
+                <!-- 步骤 2: 磁贴墙 -->
+                <div class="wizard-step" data-step="2">
+                    <div class="wizard-icon tile-demo">
+                        <div class="demo-tile tile-red"></div>
+                        <div class="demo-tile tile-blue"></div>
+                        <div class="demo-tile tile-yellow"></div>
+                    </div>
+                    <h2 class="wizard-title">磁贴墙视图</h2>
+                    <p class="wizard-desc">任务以彩色磁贴形式展示，支持拖拽排序。红色=紧急，蓝色=工作，黄色=个人</p>
+                </div>
+                
+                <!-- 步骤 3: 手势操作 -->
+                <div class="wizard-step" data-step="3">
+                    <div class="wizard-icon gesture-demo">
+                        <div class="gesture-arrow left">←</div>
+                        <div class="gesture-arrow right">→</div>
+                    </div>
+                    <h2 class="wizard-title">手势操作</h2>
+                    <p class="wizard-desc">左滑标记完成，右滑删除任务。长按进入多选模式</p>
+                </div>
+                
+                <!-- 步骤 4: 四象限看板 -->
+                <div class="wizard-step" data-step="4">
+                    <div class="wizard-icon matrix-demo">
+                        <div class="demo-matrix">
+                            <div class="demo-q q1"></div>
+                            <div class="demo-q q2"></div>
+                            <div class="demo-q q3"></div>
+                            <div class="demo-q q4"></div>
+                        </div>
+                    </div>
+                    <h2 class="wizard-title">四象限看板</h2>
+                    <p class="wizard-desc">切换到"四象限"视图，按优先级管理任务。支持拖拽任务到不同象限</p>
+                </div>
+                
+                <!-- 步骤 5: 完成 -->
+                <div class="wizard-step" data-step="5">
+                    <div class="wizard-icon">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <h2 class="wizard-title">开始使用</h2>
+                    <p class="wizard-desc">点击右下角红色 + 按钮添加你的第一个任务</p>
+                </div>
+            </div>
+            
+            <!-- 向导导航 -->
+            <div class="wizard-nav">
+                <button class="wizard-btn prev" id="wizardPrev" style="display: none;">上一步</button>
+                <div class="wizard-dots">
+                    <span class="dot active" data-step="1"></span>
+                    <span class="dot" data-step="2"></span>
+                    <span class="dot" data-step="3"></span>
+                    <span class="dot" data-step="4"></span>
+                    <span class="dot" data-step="5"></span>
+                </div>
+                <button class="wizard-btn next" id="wizardNext">下一步</button>
+            </div>
+            
+            <!-- 跳过按钮 -->
+            <button class="wizard-skip" id="wizardSkip">跳过向导</button>
+        </div>
+    </div>
+    
+    <!-- 右下角设置开关 -->
+    <div class="wizard-setting" id="wizardSetting">
+        <label class="setting-toggle">
+            <input type="checkbox" id="showWizardToggle" checked>
+            <span class="toggle-slider"></span>
+            <span class="toggle-label">每次显示向导</span>
+        </label>
+    </div>
+
+    <!-- 引入 JavaScript -->
+    <script src="js/storage.js"></script>
+    <script src="js/todo.js"></script>
+    <script src="js/gestures.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
