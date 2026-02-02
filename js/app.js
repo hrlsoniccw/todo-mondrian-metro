@@ -34,6 +34,12 @@
             UI.initBoardDragDrop();
             console.log('✅ Board drag & drop initialized');
             
+            // 4.6. 初始化任务提醒
+            if (typeof Reminder !== 'undefined') {
+                Reminder.init();
+                console.log('✅ Reminder initialized');
+            }
+            
             // 5. 注册数据变更监听器
             TodoManager.onChange(handleTodoChange);
             

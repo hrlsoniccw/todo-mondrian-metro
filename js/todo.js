@@ -44,6 +44,14 @@ const TodoManager = (function() {
         const category = data.category || 'work';
         const priority = parseInt(data.priority) || 4;
         
+        // 处理提醒时间
+        let reminder = null;
+        if (data.reminder && data.reminder > 0 && data.dueDate) {
+            reminder = data.reminder * 60 * 1000;
+        } else if (data.reminderTime) {
+            reminder = data.reminderTime;
+        }
+        
         return {
             id: data.id || generateId(),
             title: data.title || '',
@@ -57,7 +65,9 @@ const TodoManager = (function() {
             completedAt: data.completedAt || null,
             tags: Array.isArray(data.tags) ? data.tags : 
                   (data.tags ? data.tags.split(',').map(t => t.trim()).filter(t => t) : []),
-            colorTheme: data.colorTheme || getColorTheme(category, priority)
+            colorTheme: data.colorTheme || getColorTheme(category, priority),
+            reminder: reminder,
+            reminded: data.reminded || false
         };
     }
     

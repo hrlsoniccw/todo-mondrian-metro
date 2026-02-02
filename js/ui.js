@@ -533,6 +533,14 @@ const UI = (function() {
             document.getElementById('todoDue').value = todo.dueDate ? new Date(todo.dueDate).toISOString().slice(0, 16) : '';
             document.getElementById('todoTags').value = todo.tags.join(', ');
             
+            // 设置提醒
+            const reminderSelect = document.getElementById('todoReminder');
+            if (todo.reminder && todo.reminder > 0) {
+                reminderSelect.value = (todo.reminder / 60000).toString();
+            } else {
+                reminderSelect.value = '0';
+            }
+            
             // 设置分类
             document.querySelectorAll('.cat-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.cat === todo.category);
@@ -549,6 +557,7 @@ const UI = (function() {
             // 默认选中第一个
             document.querySelector('.cat-btn')?.classList.add('active');
             document.querySelector('.pri-btn')?.classList.add('active');
+            document.getElementById('todoReminder').value = '0';
         }
         
         modal.classList.add('active');
@@ -571,6 +580,25 @@ const UI = (function() {
         document.getElementById('detailTitle').textContent = todo.title;
         document.getElementById('detailDesc').textContent = todo.description || '暂无描述';
         document.getElementById('detailPriority').textContent = `优先级：${getPriorityLabel(todo.priority)}`;
+        
+        // 显示提醒设置
+        const reminderEl = document.getElementById('detailReminder');
+        if (reminderEl) {
+            if (todo.reminder && todo.reminder > 0) {
+                const reminderMinutes = todo.reminder / 60000;
+                let reminderText = '';
+                if (reminderMinutes >= 1440) {
+                    reminderText = `截止前 ${reminderMinutes / 1440} 天提醒`;
+                } else if (reminderMinutes >= 60) {
+                    reminderText = `截止前 ${reminderMinutes / 60} 小时提醒`;
+                } else {
+                    reminderText = `截止前 ${reminderMinutes} 分钟提醒`;
+                }
+                reminderEl.textContent = `⏰ ${reminderText}`;
+            } else {
+                reminderEl.textContent = '⏰ 未设置提醒';
+            }
+        }
         
         const tagsContainer = document.getElementById('detailTags');
         tagsContainer.innerHTML = todo.tags.length > 0 
@@ -766,13 +794,18 @@ const UI = (function() {
             e.preventDefault();
             
             const id = document.getElementById('todoId').value;
+            const dueDateValue = document.getElementById('todoDue').value;
+            const reminderValue = parseInt(document.getElementById('todoReminder').value) || 0;
+            
             const data = {
                 title: document.getElementById('todoTitle').value,
                 description: document.getElementById('todoDesc').value,
-                dueDate: document.getElementById('todoDue').value ? new Date(document.getElementById('todoDue').value).getTime() : null,
+                dueDate: dueDateValue ? new Date(dueDateValue).getTime() : null,
                 tags: document.getElementById('todoTags').value,
                 category: document.querySelector('.cat-btn.active')?.dataset.cat || 'work',
-                priority: parseInt(document.querySelector('.pri-btn.active')?.dataset.priority) || 4
+                priority: parseInt(document.querySelector('.pri-btn.active')?.dataset.priority) || 4,
+                reminder: reminderValue,
+                reminded: false
             };
             
             try {

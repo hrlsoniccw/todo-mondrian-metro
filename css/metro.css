@@ -1213,3 +1213,157 @@
     filter: blur(4px);
     transition: filter 0.4s ease;
 }
+
+/* 提醒通知样式 */
+.reminder-notification {
+    position: fixed;
+    top: var(--space-lg);
+    right: var(--space-lg);
+    width: 360px;
+    max-width: calc(100vw - var(--space-lg) * 2);
+    background-color: var(--mondrian-white);
+    border: var(--grid-border-width) solid var(--mondrian-black);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    z-index: var(--z-modal);
+    transform: translateX(120%);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.reminder-notification.active {
+    transform: translateX(0);
+}
+
+.reminder-content {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-md);
+    padding: var(--space-md);
+}
+
+.reminder-icon {
+    font-size: 24px;
+    flex-shrink: 0;
+    animation: bellRing 2s infinite;
+}
+
+@keyframes bellRing {
+    0%, 100% { transform: rotate(0deg); }
+    10%, 30%, 50% { transform: rotate(-15deg); }
+    20%, 40% { transform: rotate(15deg); }
+}
+
+.reminder-text {
+    flex: 1;
+    min-width: 0;
+}
+
+.reminder-title {
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+    color: var(--mondrian-black);
+    margin-bottom: 2px;
+}
+
+.reminder-task {
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--mondrian-black);
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.reminder-time {
+    font-size: var(--font-size-xs);
+    color: var(--mondrian-red);
+    font-weight: 500;
+}
+
+.reminder-actions {
+    display: flex;
+    gap: var(--space-xs);
+    flex-shrink: 0;
+}
+
+.reminder-btn {
+    padding: var(--space-xs) var(--space-sm);
+    font-size: var(--font-size-xs);
+    border: none;
+    cursor: pointer;
+    transition: all var(--duration-fast);
+    font-weight: 500;
+}
+
+.reminder-btn.view {
+    background-color: var(--mondrian-blue);
+    color: var(--mondrian-white);
+}
+
+.reminder-btn.view:hover {
+    background-color: #3a6a8a;
+}
+
+.reminder-btn.complete {
+    background-color: var(--mondrian-green, #2E7D32);
+    color: var(--mondrian-white);
+}
+
+.reminder-btn.complete:hover {
+    background-color: #1b5e20;
+}
+
+.reminder-btn.close {
+    background-color: transparent;
+    color: var(--gray-500);
+    font-size: var(--font-size-lg);
+    padding: 0 var(--space-xs);
+}
+
+.reminder-btn.close:hover {
+    color: var(--mondrian-black);
+}
+
+/* 任务详情中的提醒信息 */
+.detail-reminder {
+    font-size: var(--font-size-sm);
+    color: var(--gray-600);
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-sm);
+}
+
+/* 多个提醒通知时的堆叠效果 */
+.reminder-notification:nth-child(2) {
+    top: calc(var(--space-lg) + 100px);
+}
+
+.reminder-notification:nth-child(3) {
+    top: calc(var(--space-lg) + 200px);
+}
+
+.reminder-notification:nth-child(4) {
+    top: calc(var(--space-lg) + 300px);
+}
+
+/* 移动端提醒通知适配 */
+@media (max-width: 480px) {
+    .reminder-notification {
+        width: calc(100vw - var(--space-md) * 2);
+        left: var(--space-md);
+        right: var(--space-md);
+    }
+    
+    .reminder-content {
+        padding: var(--space-sm);
+    }
+    
+    .reminder-icon {
+        font-size: 20px;
+    }
+    
+    .reminder-task {
+        font-size: var(--font-size-sm);
+    }
+}
